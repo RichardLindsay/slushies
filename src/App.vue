@@ -5,107 +5,82 @@
         <tr>
           <th>Name</th>
           <th>Volume</th>
-          <th>ABV</th>
           <th>Brix</th>
-          <th>Sugar</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><input id="name_0" type="text"></td>
-          <td><input id="volume_0" type="number" v-model.number="volume_0"></td>
-          <td><input id="abv_0" type="number" min="1" max="100" v-model.number="abv_0"></td>
-          <td><input id="brix_0" type="number" min="1" max="100" v-model.number="brix_0"></td>
-          <td><input id="sugar_0" type="number" min="1" max="100" v-bind:change="getSugar()"></td>
+        <tr v-for="(row, index) in rows" v-bind:key="row.id">
+          <td>
+            <input v-bind:id="`name_${index}`" type="text" v-model="row.name" />
+          </td>
+          <td>
+            <input
+              v-bind:id="`volume_${index}`"
+              type="number"
+              v-model.number="row.volume"
+              v-on:change="getSugar(row.id)"
+            />
+          </td>
+          <td>
+            <input
+              v-bind:id="`brix_${index}`"
+              type="number"
+              min="1"
+              max="100"
+              v-model.number="row.brix"
+              v-on:change="getSugar(row.id)"
+            />
+          </td>
         </tr>
         <tr>
-          <td><input id="name_1" type="text"></td>
-          <td><input id="volume_1" type="number" v-model.number="volume_1"></td>
-          <td><input id="abv_1" type="number" min="1" max="100" v-model.number="abv_1"></td>
-          <td><input id="brix_1" type="number" min="1" max="100" v-model.number="brix_1"></td>
-          <td><input id="sugar_1" type="number" min="1" max="100"></td>
+          <td>
+            <button v-on:click="addRow()">Add row</button>
+          </td>
         </tr>
         <tr>
-          <td></td>
-          <td>{{volume()}}</td>
-          <td>{{abv()}}</td>
-          <td>{{100 * sugar() / volume()}}</td>
-          <td>{{sugar()}}</td>
+          <td v-if="getBrix() > -1">{{getBrix().toFixed(2)}}</td>
         </tr>
       </tbody>
     </table>
-
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
+  name: "app",
   data() {
     return {
-      volume_0: 0,
-      abv_0: 0,
-      brix_0: 0,
-      sugar_0: 0,
-      volume_1: 0,
-      abv_1: 0,
-      brix_1: 0,
-      sugar_1: 0
-  //     counter: 0,
-  //     inputs: [{
-  //       id: 'name_0',
-  //       label: 'Name',
-  //       value: ''
-  //     },
-  //     {
-  //       id: 'abv_0',
-  //       label: 'ABV',
-  //       value: ''
-  //     },
-  //     {
-  //       id: 'brix_0',
-  //       label: 'Brix',
-  //       value: ''
-  //     }]
-    }
+      rows: [{ id: 0, name: "", volume: 0, brix: 0, sugar: 0 }],
+      counter: 0
+    };
   },
   methods: {
-    volume() {
-      return this.volume_0 + this.volume_1
+    getSugar(idx) {
+      this.rows[idx].sugar =
+        (this.rows[idx].brix / 100) * this.rows[idx].volume;
     },
-    abv() {
-      return this.abv_0 + this.abv_1
+    getBrix() {
+      return (
+        (100 * this.rows.reduce((a, { sugar }) => a + Number(sugar), 0)) /
+        this.rows.reduce((a, { volume }) => a + Number(volume), 0)
+      );
     },
-    brix() {
-      return this.brix_0 + this.brix_1
-    },
-    sugar() {
-      return this.sugar_0 + this.sugar_1
-    },
-    getSugar() {
-      return ((100 / this.brix_0) * this.volume_0)
+    addRow() {
+      this.counter++;
+      this.rows.push({ id: this.counter, name: "", volume: 0, brix: 0 });
     }
-    // addInput() {
-    //   this.counter++
-    //   this.inputs.push({
-    //     id: `name_${this.counter}`,
-    //     label: 'Name',
-    //     value: ''
-    //   },
-    //   {
-    //     id: `abv_${this.counter}`,
-    //     label: 'ABV',
-    //     value: ''
-    //   },
-    //   {
-    //     id: `brix_${this.counter}`,
-    //     label: 'Brix',
-    //     value: ''
-    //   });
-    // }
   }
-}
+};
 </script>
 
 <style>
+html,
+body {
+  min-height: 100vh;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>
