@@ -19,6 +19,7 @@
               type="number"
               v-model.number="row.volume"
               v-on:change="getSugar(row.id)"
+              v-on:keyup="getSugar(row.id)"
             />
           </td>
           <td>
@@ -29,12 +30,14 @@
               max="100"
               v-model.number="row.brix"
               v-on:change="getSugar(row.id)"
+              v-on:keyup="getSugar(row.id)"
             />
           </td>
         </tr>
         <tr>
-          <td>
+          <td colspan="2">
             <button v-on:click="addRow()">Add row</button>
+            <button v-if="this.rows.length > 1" v-on:click="removeRow()">Remove row</button>
           </td>
         </tr>
         <tr>
@@ -67,7 +70,17 @@ export default {
     },
     addRow() {
       this.counter++;
-      this.rows.push({ id: this.counter, name: "", volume: 0, brix: 0 });
+      this.rows.push({
+        id: this.counter,
+        name: "",
+        volume: 0,
+        brix: 0,
+        sugar: 0
+      });
+    },
+    removeRow() {
+      this.counter--;
+      this.rows.pop();
     }
   }
 };
