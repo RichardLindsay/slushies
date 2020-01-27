@@ -15,16 +15,15 @@
         <tbody>
           <tr v-for="(ingredient, index) in ingredients" v-bind:key="ingredient.id">
             <td>
-              <label v-bind:for="`name_${index}`">Name</label>
+              <label v-bind:for="`name_${index}`">Ingredient</label>
               <input
-                placeholder="e.g. rum, lime, simple syrup etc"
                 v-bind:id="`name_${index}`"
                 type="text"
                 v-model="ingredient.name"
               />
             </td>
             <td>
-              <label v-bind:for="`volume_${index}`">Volume</label>
+              <label v-bind:for="`volume_${index}`">Volume (ml)</label>
               <input
                 v-bind:id="`volume_${index}`"
                 type="number"
@@ -58,7 +57,7 @@
         >Remove ingredient</button>
       </div>
       <div class="result" v-if="getBrix() > -1">
-        <h2>{{getBrix().toFixed(2)}}</h2>
+        <h2>{{getBrix().toFixed(2)}} Brix</h2>
       </div>
     </div>
   </div>
@@ -105,10 +104,11 @@ export default {
 
 <style>
 @import "https://meyerweb.com/eric/tools/css/reset/reset.css";
-@import "https://fonts.googleapis.com/css?family=Bungee+Shade&display=swap";
+@import "https://fonts.googleapis.com/css?family=Baloo+Bhai&display=swap";
 * {
   box-sizing: border-box;
 }
+
 html,
 body {
   min-height: 100vh;
@@ -122,12 +122,11 @@ body {
 }
 
 body {
-  padding-bottom: 2em;
+  padding-bottom: calc(2em + 64px);
 }
 
 header {
-  margin-bottom: 1em;
-  padding: 2em;
+  padding: 2em 0;
 }
 
 .wrapper {
@@ -138,8 +137,10 @@ header {
 
 h1 {
   text-align: center;
-  font-family: "Bungee Shade";
-  font-size: 2em;
+  font-family: "Baloo Bhai";
+  font-size: 4em;
+  margin: 0;
+  color: #fff;
 }
 
 table {
@@ -153,11 +154,10 @@ thead {
 }
 
 tbody tr {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 1em;
+  background-color: #fff;
+  padding: 2em 2em 0;
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
   margin-bottom: 1em;
 }
 
@@ -168,11 +168,45 @@ tr:last-child {
 td {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1em;
+  margin-bottom: 2em;
+}
+
+label {
+  color: #f76c6c;
+  font-family: "Baloo Bhai";
+  font-size: 1.5em;
+}
+
+input {
+  border: 0;
+  background-color: rgba(168, 208, 230, 0.5);
+  padding: 0.5em;
+  font-size: 1.5em;
+  border-radius: 0;
 }
 
 .ctas {
   text-align: center;
+}
+
+.result {
+  position: fixed;
+  box-shadow: 0px -5px 5px 0px rgba(0,0,0,0.2);
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  font-size: 2em;
+  padding: 0.5em;
+  background: linear-gradient(
+    to right,
+    #f76c6c 0%,
+    #f76c6c 50%,
+    #a8d0e6 50%,
+    #a8d0e6 100%
+  );
+  text-align: center;
+  font-family: "Baloo Bhai";
+  color: #fff;
 }
 
 @media only screen and (min-width: 1100px) {
@@ -207,4 +241,11 @@ td {
     display: none;
   }
 }
+
+@media only screen and (min-width: 768px) {
+  h1 {
+    font-size: 8em;
+  }
+}
+
 </style>
